@@ -6,12 +6,12 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 ROW_FILE="$ROOT/codexBar/Views/AccountRowView.swift"
 
-if ! rg -n 'account\.secondaryResetDescription' "$ROW_FILE" >/dev/null; then
+if ! rg -n 'account\.secondaryResetDescription|account\.secondaryResetStatusText' "$ROW_FILE" >/dev/null; then
   echo "FAIL: weekly reset description is not referenced in AccountRowView"
   exit 1
 fi
 
-if ! rg -n '7d 重置|7d:' "$ROW_FILE" >/dev/null; then
+if ! rg -n '7d 剩余|7d 重置|7d:' "$ROW_FILE" >/dev/null; then
   echo "FAIL: weekly reset hint label is missing"
   exit 1
 fi

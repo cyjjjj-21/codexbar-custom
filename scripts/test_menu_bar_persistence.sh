@@ -33,7 +33,7 @@ if ! rg -n 'NSPopover' "$CONTROLLER_FILE" >/dev/null; then
   exit 1
 fi
 
-if ! rg -n 'MenuBarView\(\)' "$CONTROLLER_FILE" >/dev/null; then
+if ! rg -n 'MenuBarView\s*\{' "$CONTROLLER_FILE" >/dev/null; then
   echo "FAIL: menu bar controller does not embed the SwiftUI menu view"
   exit 1
 fi
