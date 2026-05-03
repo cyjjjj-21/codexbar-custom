@@ -23,6 +23,18 @@ if [[ ! -d "${APP_PATH}" ]]; then
   exit 1
 fi
 
+echo "==> Stopping existing ${APP_NAME}"
+osascript -e 'tell application "codexAppBar" to quit' 2>/dev/null || true
+for _ in {1..20}; do
+  if ! pgrep -x codexAppBar >/dev/null; then
+    break
+  fi
+  sleep 0.1
+done
+if pgrep -x codexAppBar >/dev/null; then
+  pkill -x codexAppBar || true
+fi
+
 echo "==> Installing to ${INSTALL_PATH}"
 mkdir -p "${INSTALL_DIR}"
 rm -rf "${INSTALL_PATH}"

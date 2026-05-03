@@ -30,8 +30,8 @@ struct AccountRowView: View {
                     .font(.system(size: 9, weight: .medium))
                     .padding(.horizontal, 4)
                     .padding(.vertical, 1)
-                    .background(planBadgeColor.opacity(0.15))
-                    .foregroundColor(planBadgeColor)
+                    .background(planBadgeBackgroundColor)
+                    .foregroundColor(planBadgeForegroundColor)
                     .cornerRadius(3)
 
                 if let subscriptionExpiryText = account.subscriptionExpiryText {
@@ -237,6 +237,32 @@ struct AccountRowView: View {
         case "plus": return .purple
         default: return .gray
         }
+    }
+
+    private var planBadgeBackgroundColor: Color {
+        switch normalizedPlanType {
+        case "pro", "prolite":
+            return .black
+        default:
+            return planBadgeColor.opacity(0.15)
+        }
+    }
+
+    private var planBadgeForegroundColor: Color {
+        switch normalizedPlanType {
+        case "pro", "prolite":
+            return Color(red: 1.0, green: 0.84, blue: 0.0)
+        default:
+            return planBadgeColor
+        }
+    }
+
+    private var normalizedPlanType: String {
+        account.planType
+            .lowercased()
+            .replacingOccurrences(of: "_", with: "")
+            .replacingOccurrences(of: "-", with: "")
+            .replacingOccurrences(of: " ", with: "")
     }
 
     private func usageColor(_ remainingPercent: Double) -> Color {
