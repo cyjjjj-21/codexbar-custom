@@ -80,6 +80,8 @@ class WhamService {
             let (result, details) = try await (usageResult, accountDetails)
             await MainActor.run {
                 var updated = account
+                updated.isSuspended = false
+                updated.tokenExpired = false
                 let checkedAt = Date()
                 updated.applyUsage(result: result, checkedAt: checkedAt)
                 updated.applyAccountDetails(details)
@@ -89,12 +91,14 @@ class WhamService {
             await MainActor.run {
                 var updated = account
                 updated.isSuspended = true
+                updated.tokenExpired = false
                 store.addOrUpdate(updated)
             }
         } catch WhamError.unauthorized {
             await MainActor.run {
                 var updated = account
                 updated.tokenExpired = true
+                updated.isSuspended = false
                 store.addOrUpdate(updated)
             }
         } catch {
@@ -113,6 +117,8 @@ class WhamService {
                         let (result, details) = try await (usageResult, accountDetails)
                         await MainActor.run {
                             var updated = account
+                            updated.isSuspended = false
+                            updated.tokenExpired = false
                             let checkedAt = Date()
                             updated.applyUsage(result: result, checkedAt: checkedAt)
                             updated.applyAccountDetails(details)
@@ -122,12 +128,14 @@ class WhamService {
                         await MainActor.run {
                             var updated = account
                             updated.isSuspended = true
+                            updated.tokenExpired = false
                             store.addOrUpdate(updated)
                         }
                     } catch WhamError.unauthorized {
                         await MainActor.run {
                             var updated = account
                             updated.tokenExpired = true
+                            updated.isSuspended = false
                             store.addOrUpdate(updated)
                         }
                     } catch {
